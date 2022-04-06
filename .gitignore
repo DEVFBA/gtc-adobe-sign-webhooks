@@ -1,0 +1,5 @@
+/node_modules
+dbconfig.js
+/logs
+*.pdf
+*.txt
