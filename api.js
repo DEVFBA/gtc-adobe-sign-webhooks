@@ -26,7 +26,7 @@ app.use(bodyParser.json({
 app.use(cors({origin: '*'}));
 
 // Agregamos el código de nuestro router (routes/index.js)
-app.use('/', require('./routes'));
+app.use('/api', require('./routes'));
 
 // Manejando los errores 404
 app.use(function(req, res, next) {
@@ -65,6 +65,8 @@ process.on('unhandledRejection', (reason, p) => {
     console.log('Unhandled Rejection at: ', p, 'reason:', reason);
     // application specific logging, throwing an error, or other logic here
 });
+
+app.disable('etag');
 
 var port = process.env.PORT || 8093;
 app.listen(port);

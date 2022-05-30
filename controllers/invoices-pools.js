@@ -114,11 +114,14 @@ async function acceptInvoicePool(req) {
             pvIdWorkflowType: worflowInfo.Id_Workflow_Type,
             piIdWorkflowStatus: worflowInfo.Id_Workflow_Status,
             piIdWorkflowStatusChange: worflowInfo.Id_Workflow_Status_Change,
-            pvRecordIdentifier: req.piIdInvoicePool,
+            pvRecordIdentifier: req.piIdInvoicePool.toString(),
             pvComments: req.pvComments,
             pvUser: req.pvUser,
             pvIP: req.pvIP
         }
+
+        console.log("REGISTER POOL")
+        console.log(registerPool)
 
         var workflowPool = await insertWorkflow(registerPool)
         if(workflowPool[0][0].Code_Type === "Warning" || workflowPool[0][0].Code_Type === "Error")
@@ -196,7 +199,63 @@ async function acceptInvoicePool(req) {
 
 }
 
+async function updateInvoicePoolNextSigner(idInvoicePool, nextSigner, idAgreementStatus)
+{
+    try {
+
+        const sqlParams = [
+            {
+                name: 'pvOptionCRUD',
+                type: sql.VarChar(1),
+                value: 'U'
+            },
+            {
+                name: 'piIdInvoicePool',
+                type: sql.Int,
+                value: idInvoicePool
+            },
+            {
+                name: 'pvNextSigner',
+                type: sql.VarChar,
+                value: nextSigner
+            },
+            {
+                name: 'pvIdAgreementStatus',
+                type: sql.VarChar,
+                value: idAgreementStatus
+            }
+        ]
+
+        const spExecutionResponse = await execStoredProcedure( 'spInvoices_Pools_CRUD_Records', sqlParams );
+
+        const invoicePoolRecord = spExecutionResponse[0];
+        console.log(invoicePoolRecord)
+
+        if( invoicePoolRecord[0].Code_Successful !== true ) {
+
+            logger.info('No se pudo actualizar el next signer para el pool: ' + idInvoicePool);
+
+            return false;
+
+        } else {
+
+            logger.info('Next Signer actualizado para el pool: ' + idInvoicePool);
+
+            return true;
+
+        }
+        
+    } catch (error) {
+
+        logger.error('ERR: Error en updateInvoicePoolNextSigner' + error);
+
+        return null;
+        
+    }
+}
+
 module.exports = {
     getInvoicePoolByASAgreement : getInvoicePoolByASAgreement,
     acceptInvoicePool : acceptInvoicePool,
+    updateInvoicePoolNextSigner : updateInvoicePoolNextSigner
 }
