@@ -6,11 +6,19 @@ const fs            = require('fs');
 
 const {
     getAdobeSignClientId, 
+    getPoolCoverFileType,
+    getGeneralFilesPath
 } = require('./cat-general-parameters');
 
 const {
+    acceptInvoicePool,
+    getInvoicePoolByASAgreement,
     updateInvoicePoolNextSigner
 } = require('./invoices-pools');
+
+const {
+    getWorkflowFileTypePath,
+} = require('./file-types');
 
 const {
     getNextPoolASSigner,

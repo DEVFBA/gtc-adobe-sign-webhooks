@@ -8,7 +8,7 @@ router.route('/portal-proveedores').get((request, response)=>{
     console.log(request.headers)
     var clientId = request.headers['x-adobesign-clientid'];
     
-    dbwebhooks.getIntencionW2(clientId).then(result => {
+    dbwebhooks.getIntencionW1(clientId).then(result => {
         //response.json(result[0]);
         if(result === true)
         {
@@ -31,7 +31,7 @@ router.route('/portal-proveedores').get((request, response)=>{
 router.route('/portal-proveedores').post((request, response)=>{
     console.log(request.headers)
     var clientId = request.headers['x-adobesign-clientid'];
-    dbwebhooks.escucharNotificacionesW2(request).then(result => {
+    dbwebhooks.escucharNotificacionesW1(request).then(result => {
         var responseBody = {
             "xAdobeSignClientId" : clientId // Return Client Id in the body
         };
