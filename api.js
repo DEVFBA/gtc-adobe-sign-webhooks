@@ -26,7 +26,7 @@ app.use(bodyParser.json({
 app.use(cors({origin: '*'}));
 
 // Agregamos el código de nuestro router (routes/index.js)
-app.use('/', require('./routes'));
+app.use('/webhooks-api', require('./routes'));
 
 // Manejando los errores 404
 app.use(function(req, res, next) {
