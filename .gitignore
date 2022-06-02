@@ -1,5 +1,6 @@
 /node_modules
 dbconfig.js
+api.js
 /logs
 *.pdf
 *.txt
